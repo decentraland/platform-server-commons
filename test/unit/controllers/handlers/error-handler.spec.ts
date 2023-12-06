@@ -1,18 +1,23 @@
 import { Request } from 'node-fetch'
 import { InvalidRequestError, NotAuthorizedError, NotFoundError } from '../../../../src'
-import { IHttpServerComponent } from '@well-known-components/interfaces'
+import { IHttpServerComponent, ILoggerComponent } from '@well-known-components/interfaces'
 import { errorHandler } from '../../../../src/controllers'
+import { createLogComponent } from '@well-known-components/logger'
+import { ComponentsWithLogger } from '../../../../src/types'
 
 describe('Error Handler', () => {
-  let ctx: IHttpServerComponent.DefaultContext
+  let ctx: IHttpServerComponent.DefaultContext<ComponentsWithLogger>
+  let logs: ILoggerComponent
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    logs = await createLogComponent({})
     ctx = {
       request: new Request('', {
         method: 'POST',
         body: JSON.stringify({ foo: 'bar' })
       }),
-      url: new URL('http://localhost')
+      url: new URL('http://localhost'),
+      components: { logs }
     }
   })
 
