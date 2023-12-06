@@ -35,7 +35,7 @@
   "homepage": "https://github.com/decentraland/platform-server-commons#readme",
   "dependencies": {
     "@well-known-components/interfaces": "^1.4.2",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@dcl/eslint-config": "^1.1.13",
