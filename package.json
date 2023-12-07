@@ -27,13 +27,14 @@
     "middleware",
     "well-known-components"
   ],
-  "author": "",
+  "author": "Decentraland",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/decentraland/platform-server-commons/issues"
   },
   "homepage": "https://github.com/decentraland/platform-server-commons#readme",
   "dependencies": {
+    "@well-known-components/http-server": "^2.0.0",
     "@well-known-components/interfaces": "^1.4.2",
     "node-fetch": "^2.7.0"
   },
