@@ -1,4 +1,4 @@
-import { IFetchComponent } from '@well-known-components/http-server'
+import { IFetchComponent } from '@well-known-components/interfaces'
 import * as nodeFetch from 'node-fetch'
 
 class HTTPResponseError extends Error {

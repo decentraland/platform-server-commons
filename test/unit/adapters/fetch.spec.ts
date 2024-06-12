@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
-import { IFetchComponent } from '@well-known-components/http-server'
-import { createFetchComponent } from '../../../src/adapters'
+import { IFetchComponent } from '@well-known-components/interfaces'
+import { createFetchComponent } from '../../../src'
 
 jest.mock('node-fetch', () => jest.fn())
 
