@@ -1,41 +1,67 @@
-import { getPaginationParams } from '../../../src/adapters/pagination'
+import { URLSearchParams } from 'url'
+import { getPaginationParams } from '../../../src/adapters'
 
-describe('getPaginationParams', () => {
-  const MAX_LIMIT = 100
-
-  function makeParams(obj: Record<string, string | undefined>): URLSearchParams {
-    const params = new URLSearchParams()
-    for (const [key, value] of Object.entries(obj)) {
-      if (value !== undefined) params.set(key, value)
-    }
-    return params
-  }
-
-  it('should return defaults when no params are provided', () => {
-    const params = makeParams({})
-    expect(getPaginationParams(params)).toEqual({ limit: MAX_LIMIT, offset: 0 })
+describe('when getting the pagination params', () => {
+  describe('and the limit is greater than the max limit', () => {
+    it('should return the default limit', () => {
+      expect(getPaginationParams(new URLSearchParams({ limit: '200' }))).toEqual({
+        limit: 100,
+        offset: 0
+      })
+    })
   })
 
-  it('should use valid limit and offset', () => {
-    const params = makeParams({ limit: '10', offset: '20' })
-    expect(getPaginationParams(params)).toEqual({ limit: 10, offset: 20 })
+  describe('and the limit is set to a negative number', () => {
+    it('should return the default limit', () => {
+      expect(getPaginationParams(new URLSearchParams({ limit: '-100' }))).toEqual({
+        limit: 100,
+        offset: 0
+      })
+    })
   })
 
-  it('should use MAX_LIMIT if limit is missing or invalid', () => {
-    expect(getPaginationParams(makeParams({ offset: '5' }))).toEqual({ limit: MAX_LIMIT, offset: 5 })
-    expect(getPaginationParams(makeParams({ limit: 'abc', offset: '5' }))).toEqual({ limit: MAX_LIMIT, offset: 5 })
-    expect(getPaginationParams(makeParams({ limit: '-1', offset: '5' }))).toEqual({ limit: MAX_LIMIT, offset: 5 })
-    expect(getPaginationParams(makeParams({ limit: '0', offset: '5' }))).toEqual({ limit: MAX_LIMIT, offset: 5 })
-    expect(getPaginationParams(makeParams({ limit: '200', offset: '5' }))).toEqual({ limit: MAX_LIMIT, offset: 5 })
+  describe("and the limit is set to a a value that can't be parsed as a number", () => {
+    it('should return the default limit', () => {
+      expect(getPaginationParams(new URLSearchParams({ limit: 'notAnInteger' }))).toEqual({
+        limit: 100,
+        offset: 0
+      })
+    })
   })
 
-  it('should default offset to 0 if missing or invalid', () => {
-    expect(getPaginationParams(makeParams({ limit: '10' }))).toEqual({ limit: 10, offset: 0 })
-    expect(getPaginationParams(makeParams({ limit: '10', offset: 'abc' }))).toEqual({ limit: 10, offset: 0 })
-    expect(getPaginationParams(makeParams({ limit: '10', offset: '-5' }))).toEqual({ limit: 10, offset: 0 })
+  describe('and the limit is set to a valid value', () => {
+    it('should return the value as the limit', () => {
+      expect(getPaginationParams(new URLSearchParams({ limit: '10' }))).toEqual({
+        limit: 10,
+        offset: 0
+      })
+    })
   })
 
-  it('should handle both limit and offset missing', () => {
-    expect(getPaginationParams(makeParams({}))).toEqual({ limit: MAX_LIMIT, offset: 0 })
+  describe('and the page is not set', () => {
+    it('should return the default page', () => {
+      expect(getPaginationParams(new URLSearchParams({}))).toEqual({
+        limit: 100,
+        offset: 0
+      })
+    })
+  })
+
+  describe("and the page is set to a a value that can't be parsed as a number", () => {
+    it('should return the default offset', () => {
+      expect(getPaginationParams(new URLSearchParams({ page: 'notAnInteger' }))).toEqual({
+        limit: 100,
+        offset: 0
+      })
+    })
+  })
+
+  describe('and the page is set to a negative integer', () => {
+    it('should return the default offset', () => {
+      expect(getPaginationParams(new URLSearchParams({ page: '-20' }))).toEqual({
+        limit: 100,
+        offset: 0
+      })
+    })
   })
 })
