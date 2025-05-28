@@ -38,29 +38,47 @@ describe('when getting the pagination params', () => {
     })
   })
 
-  describe('and the page is not set', () => {
-    it('should return the default page', () => {
-      expect(getPaginationParams(new URLSearchParams({}))).toEqual({
+  describe('and the offset is set to a valid value', () => {
+    it('should return the value as the offset', () => {
+      expect(getPaginationParams(new URLSearchParams({ offset: '20' }))).toEqual({
+        limit: 100,
+        offset: 20
+      })
+    })
+  })
+
+  describe('and the offset is set to a negative number', () => {
+    it('should default the offset to 0', () => {
+      expect(getPaginationParams(new URLSearchParams({ offset: '-5' }))).toEqual({
         limit: 100,
         offset: 0
       })
     })
   })
 
-  describe("and the page is set to a a value that can't be parsed as a number", () => {
-    it('should return the default offset', () => {
-      expect(getPaginationParams(new URLSearchParams({ page: 'notAnInteger' }))).toEqual({
+  describe("and the offset can't be parsed as a number", () => {
+    it('should default the offset to 0', () => {
+      expect(getPaginationParams(new URLSearchParams({ offset: 'notAnInteger' }))).toEqual({
         limit: 100,
         offset: 0
       })
     })
   })
 
-  describe('and the page is set to a negative integer', () => {
-    it('should return the default offset', () => {
-      expect(getPaginationParams(new URLSearchParams({ page: '-20' }))).toEqual({
+  describe('and both limit and offset are missing', () => {
+    it('should return the defaults', () => {
+      expect(getPaginationParams(new URLSearchParams())).toEqual({
         limit: 100,
         offset: 0
+      })
+    })
+  })
+
+  describe('and both limit and offset are valid', () => {
+    it('should return the provided values', () => {
+      expect(getPaginationParams(new URLSearchParams({ limit: '25', offset: '30' }))).toEqual({
+        limit: 25,
+        offset: 30
       })
     })
   })
