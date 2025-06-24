@@ -1,7 +1,7 @@
 import { Request } from 'node-fetch'
-import { parseJson } from '../../src/utils'
+import { parseJson } from '../../../src/utils'
 
-describe('Utils', () => {
+describe('when parsing a request', () => {
   it('should parse json correctly', async () => {
     const request = new Request('', {
       method: 'POST',

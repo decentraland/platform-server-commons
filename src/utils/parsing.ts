@@ -1,5 +1,5 @@
 import { IHttpServerComponent } from '@well-known-components/interfaces'
-import { InvalidRequestError } from './errors'
+import { InvalidRequestError } from '../errors'
 
 export async function parseJson<T>(request: IHttpServerComponent.IRequest): Promise<T> {
   try {
