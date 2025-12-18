@@ -35,7 +35,7 @@
   "homepage": "https://github.com/decentraland/platform-server-commons#readme",
   "dependencies": {
     "@dcl/schemas": "^18.0.0",
-    "@well-known-components/http-server": "^2.1.0",
+    "@dcl/wkc-http-server": "^1.0.3",
     "@well-known-components/interfaces": "^1.4.3",
     "node-fetch": "^2.7.0"
   },
