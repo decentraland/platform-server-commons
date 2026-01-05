@@ -1,0 +1,31 @@
+name: npm deprecate
+
+on:
+  workflow_dispatch:
+    inputs:
+      deprecation-message:
+        description: 'Deprecation message shown to users'
+        required: true
+        type: string
+        default: 'This package is deprecated.'
+      version-spec:
+        description: 'Version specification (leave empty for all versions)'
+        required: false
+        type: string
+        default: ''
+      dry-run:
+        description: 'Dry run mode - preview without making changes'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  deprecate:
+    uses: decentraland/platform-actions/.github/workflows/npm-deprecate.yml@main
+    with:
+      package-name: '@dcl/platform-server-commons'
+      deprecation-message: ${{ inputs.deprecation-message }}
+      version-spec: ${{ inputs.version-spec }}
+      dry-run: ${{ inputs.dry-run }}
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
